@@ -1,13 +1,9 @@
-const MeetupDetails = () => {
+import MeetupDetail from "../../components/meetups/MeetupDetail";
 
+const MeetupDetailPage = () => {
     return (
-        <>
-            <img src="https://picsum.photos/id/237/1920/480" alt="First Meetup" />
-            <h1>A first meetup</h1>
-            <address>Some address</address>
-            <p>The meetup page</p>
-        </>
+        <MeetupDetail imageURL="https://picsum.photos/id/237/1920/480" title="First Meetup" address="Some address" description="The meetup page" />
     )
 }
 
-export default MeetupDetails;
+export default MeetupDetailPage;
