@@ -1,4 +1,5 @@
 import MeetupList from '../components/meetups/MeetupList';
+import Head from 'next/head';
 import { MongoClient } from 'mongodb';
 
 // Next renders exactly the page you gave it, but then when you use react hooks etc, you then hydrate the page on runtime.
@@ -6,7 +7,13 @@ import { MongoClient } from 'mongodb';
 // SSR: Built on demand
 const HomePage = (props) => {
     return (
-        <MeetupList meetups={props.meetups} />
+        <>
+            <Head>
+                <title>NextJS Meetups</title>
+                <meta name="description" content="Browse a large list of meetups for next js." />
+            </Head>
+            <MeetupList meetups={props.meetups} />
+        </>
     )
 }
 
