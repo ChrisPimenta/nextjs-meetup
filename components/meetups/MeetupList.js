@@ -8,7 +8,7 @@ function MeetupList(props) {
         <MeetupItem
           key={meetup.id}
           id={meetup.id}
-          image={meetup.image}
+          imageURL={meetup.imageURL}
           title={meetup.title}
           address={meetup.address}
         />

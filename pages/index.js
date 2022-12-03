@@ -1,28 +1,5 @@
 import MeetupList from '../components/meetups/MeetupList';
-
-const DUMMY_MEETUPS = [
-    {
-        id: 'm1',
-        title: '1 meetup',
-        image: 'https://picsum.photos/id/237/1920/480',
-        address: 'Some address 5, 12345 Some City',
-        description: 'This is a 1 meetup!'
-    },
-    {
-        id: 'm2',
-        title: '2 meetup',
-        image: 'https://picsum.photos/id/238/1920/480',
-        address: 'Some address 7, 12345 Some City',
-        description: 'This is a 2 meetup!'
-    },
-    {
-        id: 'm3',
-        title: '3 meetup',
-        image: 'https://picsum.photos/id/239/1920/480',
-        address: 'Some address 5, 12345 Some City',
-        description: 'This is a 3 meetup!'
-    }
-];
+import { MongoClient } from 'mongodb';
 
 // Next renders exactly the page you gave it, but then when you use react hooks etc, you then hydrate the page on runtime.
 // SSG: Page is pre-rendered once it is built. Static pages.
@@ -37,10 +14,28 @@ const HomePage = (props) => {
 // All code in here never ends up in the client side, just during the build process.
 // Can cache on CDN - use this most of the time
 export const getStaticProps = async () => {
-    // Over here you can do some API fetch - this fetch happens before the page even shows which is great for SEO
+    const client = await MongoClient.connect('mongodb+srv://Chrispy:or2vAM5VAWDfxoBx@cluster0.o7e5dp2.mongodb.net/meetups?retryWrites=true&w=majority');
+
+    const db = client.db();
+
+    const meetupsCollection = db.collection('meetups');
+
+    const meetups = await meetupsCollection.find({}).toArray();
+
+    client.close();
+
+    // This fetch happens before the page even shows which is great for SEO
     return {
         props: {
-            meetups: DUMMY_MEETUPS
+            meetups: meetups.map(meetup => {
+                return {
+                    id: meetup._id.toString(),
+                    title: meetup.title,
+                    imageURL: meetup.imageURL,
+                    address: meetup.address,
+                    description: meetup.description
+                }
+            })
         },
         // Incremental static generation
         // If within 10 seconds a new request is made, it will redo this getStaticProps, otherwise it will give the same props as before
